@@ -1,9 +1,7 @@
-package springBootSecurity.service;
+package springBootSecurity.services;
 
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import springBootSecurity.dao.UserDAO;
+import springBootSecurity.repositories.UserRepository;
 import springBootSecurity.models.Role;
 import springBootSecurity.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,75 +16,62 @@ import java.util.Set;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserDAO userDAO;
+    private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserDAO userDAO, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userDAO = userDAO;
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Transactional
     @Override
     public boolean saveUser(User user) {
-        if(userDAO.findByUsername(user.getUsername()) != null) {
+        if(userRepository.findByUsername(user.getUsername()) != null) {
             return false;
         }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userDAO.save(user);
+        userRepository.save(user);
         return true;
     }
 
     @Transactional
     @Override
     public void removeUserById(Long id) {
-        userDAO.deleteById(id);
+        userRepository.deleteById(id);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<User> getAllUsers() {
-        return userDAO.findAll();
+        return userRepository.findAll();
     }
 
     @Transactional
     @Override
     public void cleanUsersTable() {
-        userDAO.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Transactional(readOnly = true)
     @Override
     public User getUserById(Long id) {
-        Optional<User> user = userDAO.findById(id);
+        Optional<User> user = userRepository.findById(id);
         return user.orElse(null);
     }
 
     @Transactional(readOnly = true)
     public User getUserByUsername(String username) {
-        return userDAO.findByUsername(username);
+        return userRepository.findByUsername(username);
     }
 
     @Transactional
     @Override
     public boolean updateUser(User user) {
-//        if(userDAO.findByUsername(user.getUsername()) != null) {
-//            return false;
-//        }
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userDAO.save(user);
+        userRepository.save(user);
         return true;
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userDAO.findByUsername(username);
-        if (user == null) {
-            throw new UsernameNotFoundException("Not Found");
-        }
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), user.getAuthorities());
     }
 
     public Set<Role> getRoles(String roleName) {

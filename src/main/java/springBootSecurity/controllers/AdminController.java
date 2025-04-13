@@ -1,9 +1,9 @@
-package springBootSecurity.controller;
+package springBootSecurity.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
 import springBootSecurity.models.Role;
-import springBootSecurity.service.UserService;
+import springBootSecurity.services.UserService;
 import springBootSecurity.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,12 +20,12 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
-public class AdminPage {
+public class AdminController {
 
     private final UserService userService;
 
     @Autowired
-    public AdminPage(UserService userService) {
+    public AdminController(UserService userService) {
         this.userService = userService;
     }
 

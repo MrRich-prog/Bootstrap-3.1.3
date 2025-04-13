@@ -1,13 +1,12 @@
-package springBootSecurity.service;
+package springBootSecurity.services;
 
-import org.springframework.security.core.userdetails.UserDetailsService;
 import springBootSecurity.models.Role;
 import springBootSecurity.models.User;
 
 import java.util.List;
 import java.util.Set;
 
-public interface UserService extends UserDetailsService {
+public interface UserService{
 
     boolean saveUser(User user);
 

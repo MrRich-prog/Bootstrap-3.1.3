@@ -1,10 +1,9 @@
-package springBootSecurity.controller;
+package springBootSecurity.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import springBootSecurity.models.Role;
-import springBootSecurity.service.UserService;
+import springBootSecurity.services.UserService;
 import springBootSecurity.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,18 +13,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.HashSet;
-import java.util.Set;
-
 
 @Controller
 @RequestMapping("/formRegistration")
-public class Registration {
+public class RegistrationController {
 
     private final UserService userService;
 
     @Autowired
-    public Registration(UserService userService) {
+    public RegistrationController(UserService userService) {
         this.userService = userService;
     }
 

@@ -1,9 +1,9 @@
-package springBootSecurity.dao;
+package springBootSecurity.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import springBootSecurity.models.User;
 
-public interface UserDAO extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByUsername(String username);
 

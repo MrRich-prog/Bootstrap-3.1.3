@@ -1,6 +1,7 @@
 package springBootSecurity.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,6 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -38,7 +40,7 @@ public class User implements UserDetails {
     @Max(value = 120, message = "Возраст не должен превышать 120")
     private int age;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "User_id"),
             inverseJoinColumns = @JoinColumn(name = "Roles_id"))
@@ -50,10 +52,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String name, String password, int age) {
+    public User(String name, String password, int age, Set<Role> roles) {
         this.username = name;
         this.password = password;
         this.age = age;
+        this.roles = roles;
     }
 
     public Long getId() {

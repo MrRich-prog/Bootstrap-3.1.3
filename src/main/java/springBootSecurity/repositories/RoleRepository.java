@@ -1,4 +1,4 @@
-package springBootSecurity.dao;
+package springBootSecurity.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import springBootSecurity.models.Role;
