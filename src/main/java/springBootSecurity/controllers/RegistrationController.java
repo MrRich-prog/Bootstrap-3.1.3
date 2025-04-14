@@ -32,11 +32,11 @@ public class RegistrationController {
     }
 
     @PostMapping("")
-    public String registration(@RequestParam(value = "role") String roleName, @ModelAttribute("user") @Valid User userForm, BindingResult bindingR, ModelMap model) {
+    public String registration(@ModelAttribute("user") @Valid User userForm, BindingResult bindingR, ModelMap model) {
         if (bindingR.hasErrors()) {
             return "formRegistration";
         }
-        userForm.setRoles(userService.getRoles(roleName));
+        userForm.setRoles(userService.getRoles("ROLE_USER"));
         if (!userService.saveUser(userForm)){
             model.addAttribute("userFormError", "Username already exists");
             return "formRegistration";

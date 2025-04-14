@@ -43,6 +43,7 @@ public class AdminController {
 
         model.addAttribute("userNew", new User());
         model.addAttribute("users", users);
+
     }
 
     @PostMapping(value = "/saveUser")
@@ -59,22 +60,22 @@ public class AdminController {
     }
 
     @PostMapping(value = "/updateUser")
-    public String updateUser(@RequestParam(value = "role") String roleName, @ModelAttribute @Valid User user, ModelMap model/*, BindingResult bindingResult*/) {
-//        if (bindingResult.hasErrors()) {
-//            return "UpdateUser"; //должно быть модальное окно
-//        }
-        user.setRoles(userService.getRoles(roleName));
-        userService.updateUser(user);
+    public String updateUser(@RequestParam(value = "role") String roleName,
+                             @RequestParam(value = "usernameOld") String usernameOld,
+                             @RequestParam(value = "passwordOld") String passwordOld,
+                             @ModelAttribute @Valid User user) {
 
-//        if (!userService.updateUser(user)){
-//            model.addAttribute("userFormError", "Username already exists");
-//            return "UpdateUser";  //должно быть модальное окно
-//        }
+        user.setRoles(userService.getRoles(roleName));
+
+        if (!userService.updateUser(user, usernameOld, passwordOld)){
+            System.out.println("Username already exists");
+            return "Table";  //должно быть модальное окно ?
+        }
         return "redirect:/admin/refresh";
     }
 
     @PostMapping(value = "/removeUserById")
-    public String removeUserById(@RequestParam Long id, ModelMap model) {
+    public String removeUserById(@RequestParam Long id) {
         userService.removeUserById(id);
 
         return "redirect:/admin/refresh";
@@ -92,12 +93,4 @@ public class AdminController {
         model.addAttribute("users", userService.getAllUsers());
         return "Table";
     }
-//      не используется
-//    @PostMapping(value = "/cleanUserTable")
-//    public String cleanUserTable(ModelMap model) {
-//        userService.cleanUsersTable();
-//        List<User> users = userService.getAllUsers();
-//        model.addAttribute("users", users);
-//        return "Table";
-//    }
 }

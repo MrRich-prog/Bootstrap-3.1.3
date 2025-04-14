@@ -114,8 +114,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="userForm" action="/admin/updateUser" method="post" th:object="${userNew}">
+                <form id="userForm" action="/admin/updateUser" method="post" th:object="${userNew}" >
                     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+                    <input type="text" class="form-control" id="usernameOld" name="usernameOld" hidden="hidden">
+                    <input type="text" class="form-control" id="passwordOld" name="passwordOld" hidden="hidden">
 
                     <div class="mb-3">
                         <label for="userId" class="form-label">ID</label>
@@ -136,24 +139,23 @@
 
                     <div class="mb-3">
                         <label for="age" class="form-label">Age</label>
-                        <input type="number" class="form-control" id="age" name="age" th:field="*{age}" required>
+                        <input type="number" class="form-control" id="age" name="age" th:field="*{age}" required min="1">
                         <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Ошибка</span>
                     </div>
 
                     <div class="mb-3">
                         <label for="role" class="form-label">Role</label>
-                        <select class="form-select form-select-lg mb-1" aria-label=".form-select-lg example" name="role" id="role">
+                        <select class="form-select form-select-lg mb-1" aria-label=".form-select-lg example" id="role" name="role">
                             <option value="ROLE_USER">User</option>
                             <option value="ROLE_ADMIN">Admin</option>
                             <option value="ROLE_ADMIN,ROLE_USER">User and Admin</option>
                         </select>
                     </div>
-
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" form="userForm">Save changes</button>
+                <button type="submit" class="btn btn-primary" form="userForm" >Save changes</button>
             </div>
         </div>
     </div>
@@ -206,6 +208,7 @@
         </div>
     </div>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
         integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 
@@ -228,6 +231,9 @@
             const role = button.getAttribute('data-user-role');
 
             // Заполняем поля формы в модальном окне
+            document.getElementById('usernameOld').value = username;
+            document.getElementById('passwordOld').value = password;
+
             document.getElementById('userId').value = userID;
             document.getElementById('username').value = username;
             document.getElementById('password').value = password;

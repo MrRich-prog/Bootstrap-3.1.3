@@ -27,19 +27,9 @@
                 </div>
                 <div class="mb-3">
                     <label for="age" class="form-label">Age</label>
-                    <input type="text" class="form-control" id="age" th:field="*{age}" required>
+                    <input type="text" class="form-control" id="age" th:field="*{age}" required min="1">
                     <span th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Ошибка</span>
                 </div>
-
-                <div class="mb-3">
-                    <label for="role" class="form-label">Role</label>
-                    <select class="form-select form-select-lg mb-1" aria-label=".form-select-lg example" name="role" id="role">
-                        <option selected value="ROLE_USER">User</option>
-                        <option value="ROLE_ADMIN">Admin</option>
-                        <option value="ROLE_ADMIN,ROLE_USER">Admin and User</option>
-                    </select>
-                </div>
-
                 <div class="mb-3">
                     <button type="submit" style="background-color: green; color: white; border-radius: 5px;font-size: 24px; padding: 4px 10px">
                         Registration
