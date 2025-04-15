@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import springBootSecurity.models.Role;
 import springBootSecurity.models.User;
 import springBootSecurity.repositories.RoleRepository;
-import springBootSecurity.services.UserService;
+import springBootSecurity.services.UserService.UserService;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +22,7 @@ public class DatabaseInitialization implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         roleRepository.save(new Role(2L, "ROLE_USER"));
         roleRepository.save(new Role(1L, "ROLE_ADMIN"));
 
@@ -32,10 +32,8 @@ public class DatabaseInitialization implements CommandLineRunner {
         roles2.add(new Role(1L, "ROLE_ADMIN"));
         roles2.add(new Role(2L, "ROLE_USER"));
 
-        boolean save = userService.saveUser(new User("User","1234",14,roles));
-        boolean save2 = userService.saveUser(new User("Admin","1234",14,roles2));
+        userService.saveUser(new User("User","1234",14,roles));
+        userService.saveUser(new User("Admin","1234",14,roles2));
 
-        System.out.println(save);
-        System.out.println(save2);
     }
 }

@@ -2,8 +2,8 @@ package springBootSecurity.controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import springBootSecurity.services.UserService;
+import springBootSecurity.services.RoleService.RoleService;
+import springBootSecurity.services.UserService.UserService;
 import springBootSecurity.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegistrationController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public RegistrationController(UserService userService) {
+    public RegistrationController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @GetMapping("")
@@ -36,7 +38,7 @@ public class RegistrationController {
         if (bindingR.hasErrors()) {
             return "formRegistration";
         }
-        userForm.setRoles(userService.getRoles("ROLE_USER"));
+        userForm.setRoles(roleService.getRoleById(2L));
         if (!userService.saveUser(userForm)){
             model.addAttribute("userFormError", "Username already exists");
             return "formRegistration";

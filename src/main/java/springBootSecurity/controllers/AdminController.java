@@ -3,7 +3,8 @@ package springBootSecurity.controllers;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.RequestMapping;
 import springBootSecurity.models.Role;
-import springBootSecurity.services.UserService;
+import springBootSecurity.services.RoleService.RoleService;
+import springBootSecurity.services.UserService.UserService;
 import springBootSecurity.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,10 +24,12 @@ import java.util.stream.Collectors;
 public class AdminController {
 
     private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
-    public AdminController(UserService userService) {
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     @ModelAttribute
@@ -44,14 +47,20 @@ public class AdminController {
         model.addAttribute("userNew", new User());
         model.addAttribute("users", users);
 
+        model.addAttribute("roles", roleService.getAllRoles());
+
     }
 
     @PostMapping(value = "/saveUser")
-    public String saveUser(@RequestParam(value = "role") String roleName, @ModelAttribute @Valid User user, ModelMap model, BindingResult bindingResult) {
+    public String saveUser(@RequestParam(value = "role") List<String> roles,
+                           @ModelAttribute @Valid User user, ModelMap model,
+                           BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
             return "AddUser"; // Вернуть обратно на форму с ошибками
         }
-        user.setRoles(userService.getRoles(roleName));
+
+        user.setRoles(roleService.getRoleByName(roles));
         if (!userService.saveUser(user)){
             model.addAttribute("userFormError", "Username already exists");
             return "AddUser";
@@ -60,12 +69,12 @@ public class AdminController {
     }
 
     @PostMapping(value = "/updateUser")
-    public String updateUser(@RequestParam(value = "role") String roleName,
+    public String updateUser(@RequestParam(value = "role") List<String> roles,
                              @RequestParam(value = "usernameOld") String usernameOld,
                              @RequestParam(value = "passwordOld") String passwordOld,
                              @ModelAttribute @Valid User user) {
 
-        user.setRoles(userService.getRoles(roleName));
+        user.setRoles(roleService.getRoleByName(roles));
 
         if (!userService.updateUser(user, usernameOld, passwordOld)){
             System.out.println("Username already exists");

@@ -5,4 +5,6 @@ import springBootSecurity.models.Role;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Role findById(long id);
+
+    Role findByName(String name);
 }

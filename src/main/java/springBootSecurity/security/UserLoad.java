@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import springBootSecurity.models.User;
-import springBootSecurity.services.UserService;
+import springBootSecurity.services.UserService.UserService;
 
 @Component
 public class UserLoad implements UserDetailsService {

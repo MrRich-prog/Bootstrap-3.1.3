@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import springBootSecurity.models.Role;
 import springBootSecurity.models.User;
-import springBootSecurity.services.UserService;
+import springBootSecurity.services.UserService.UserService;
 
 import java.security.Principal;
 import java.util.stream.Collectors;

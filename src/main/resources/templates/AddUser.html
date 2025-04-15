@@ -77,10 +77,11 @@
 
                             <div class="mb-3">
                                 <label for="role" class="form-label">Role</label>
-                                <select class="form-select form-select-lg mb-1" aria-label=".form-select-lg example" name="role" id="role">
-                                    <option selected value="ROLE_USER">User</option>
-                                    <option value="ROLE_ADMIN">Admin</option>
-                                    <option value="ROLE_ADMIN,ROLE_USER">Admin and User</option>
+                                <select class="form-select form-select-lg mb-1" aria-label=".form-select-lg example" id="role" name="role"  multiple required>
+                                    <option th:each="role : ${roles}"
+                                            th:value="${role.getName()}"
+                                            th:text="${role.getName()}">
+                                    </option>
                                 </select>
                             </div>
 

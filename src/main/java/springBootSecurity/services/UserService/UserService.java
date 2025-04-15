@@ -1,10 +1,8 @@
-package springBootSecurity.services;
+package springBootSecurity.services.UserService;
 
-import springBootSecurity.models.Role;
 import springBootSecurity.models.User;
 
 import java.util.List;
-import java.util.Set;
 
 public interface UserService{
 
@@ -18,5 +16,4 @@ public interface UserService{
 
     boolean updateUser(User user, String username, String password);
 
-    Set<Role> getRoles(String roleName);
 }

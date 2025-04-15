@@ -1,30 +1,24 @@
-package springBootSecurity.services;
+package springBootSecurity.services.UserService;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import springBootSecurity.repositories.RoleRepository;
 import springBootSecurity.repositories.UserRepository;
-import springBootSecurity.models.Role;
 import springBootSecurity.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository) {
+    public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.roleRepository = roleRepository;
     }
 
     @Transactional
@@ -69,22 +63,5 @@ public class UserServiceImpl implements UserService {
         }
         userRepository.save(user);
         return true;
-    }
-
-    public Set<Role> getRoles(String roleName) {
-        Set<Role> roles = new HashSet<>();
-        switch (roleName){
-            case "ROLE_ADMIN":
-                roles.add(roleRepository.findById(1L));
-                break;
-            case "ROLE_USER":
-                roles.add(roleRepository.findById(2L));
-                break;
-            case "ROLE_ADMIN,ROLE_USER":
-                roles.add(roleRepository.findById(1L));
-                roles.add(roleRepository.findById(2L));
-                break;
-        }
-        return roles;
     }
 }
